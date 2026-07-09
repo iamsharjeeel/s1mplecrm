@@ -42,39 +42,43 @@ export async function createOrganization(
   }
 
   const slug = slugify(parsed.data);
+  const orgId = crypto.randomUUID();
 
-  const { data: org, error: orgError } = await supabase
-    .from("organizations")
-    .insert({ name: parsed.data, slug })
-    .select("id, name, slug")
-    .single();
+  const { error: orgError } = await supabase.from("organizations").insert({
+    id: orgId,
+    name: parsed.data,
+    slug,
+  });
 
-  if (orgError || !org) {
-    console.error("[orgs:createOrganization]", orgError?.message);
-    return { data: null, error: "Could not create organization" };
+  if (orgError) {
+    console.error("[orgs:createOrganization]", orgError.message);
+    return { data: null, error: `Could not create organization: ${orgError.message}` };
   }
 
   const { error: memberError } = await supabase
     .from("organization_members")
-    .insert({ org_id: org.id, user_id: user.id, role: "owner" });
+    .insert({ org_id: orgId, user_id: user.id, role: "owner" });
 
   if (memberError) {
     console.error("[orgs:createOrganization:member]", memberError.message);
-    return { data: null, error: "Could not add you as owner" };
+    return { data: null, error: `Could not add you as owner: ${memberError.message}` };
   }
 
-  await setActiveOrgCookie(org.id);
+  await setActiveOrgCookie(orgId);
 
   await writeActivity({
-    orgId: org.id,
+    orgId,
     actorId: user.id,
     verb: "created",
     entityType: "organization",
-    entityId: org.id,
-    meta: { name: org.name },
+    entityId: orgId,
+    meta: { name: parsed.data },
   });
 
-  return { data: org, error: null };
+  return {
+    data: { id: orgId, name: parsed.data, slug },
+    error: null,
+  };
 }
 
 export async function updateOrganization(
