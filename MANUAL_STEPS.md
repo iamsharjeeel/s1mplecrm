@@ -4,12 +4,16 @@ Do these before (or right after) deploy. App code assumes they are done.
 
 ## 1. Run database migration (REQUIRED)
 
-Supabase MCP/CLI cannot access project `vyxbggvprphchnecfftq` from this machine.
+Supabase MCP on this machine only sees the Cadence project, not `vyxbggvprphchnecfftq`. Apply SQL manually:
 
 1. Open Supabase Dashboard → project `vyxbggvprphchnecfftq` → SQL Editor
-2. Paste and run the full contents of:
+2. Paste and run the **full** contents of:
    `supabase/migrations/20260709000000_v1_schema.sql`
-3. Confirm no errors (tables + RLS + storage bucket `org-logos`)
+3. Confirm success (tables + RLS + storage bucket `org-logos`)
+
+**If a previous run failed** with `organization_members does not exist`: that was a create-order bug (fixed). Re-run the updated file — it is idempotent (`if not exists` / `drop policy if exists`).
+
+**To let the agent apply migrations later:** in Cursor, re-auth the Supabase MCP / add project `vyxbggvprphchnecfftq` to the linked org, or run `npx supabase login` then `npx supabase link --project-ref vyxbggvprphchnecfftq`.
 
 ## 2. Auth redirect URLs (REQUIRED for Google / magic link)
 
