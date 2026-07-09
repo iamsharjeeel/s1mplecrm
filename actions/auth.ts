@@ -102,6 +102,33 @@ export async function signInWithMagicLink(
   return { data: { sent: true }, error: null };
 }
 
+export async function signInWithGoogle(): Promise<AuthActionResult> {
+  const supabase = await createClient();
+  const origin = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: `${origin}/auth/callback`,
+      queryParams: {
+        access_type: "offline",
+        prompt: "consent",
+      },
+    },
+  });
+
+  if (error) {
+    console.error("[auth:google]", error.message);
+    return { data: null, error: error.message };
+  }
+
+  if (!data.url) {
+    return { data: null, error: "Could not start Google sign-in" };
+  }
+
+  redirect(data.url);
+}
+
 export async function signOut(): Promise<void> {
   const supabase = await createClient();
   const { error } = await supabase.auth.signOut();

@@ -2,7 +2,8 @@
 
 ## Current phase and status
 
-Phase 0 — Foundation: **done**. Auth + empty dashboard live at https://s1mplecrm.vercel.app. Stop for user testing before Phase 1.
+Phase 0 — Foundation: **done** (+ Google OAuth UI). Live: https://s1mplecrm.vercel.app  
+Awaiting design variation approval (see `DESIGN_PROMPTS.md`) before Phase 1 UI polish. Phase 1 tenancy can start after user confirms Google + auth SMTP preference.
 
 ## Architecture decisions
 
@@ -12,6 +13,8 @@ Phase 0 — Foundation: **done**. Auth + empty dashboard live at https://s1mplec
 - 2026-07-09: Auth mutations in `actions/auth.ts` with zod; return `{ data, error }`.
 - 2026-07-09: Env uses `NEXT_PUBLIC_SUPABASE_ANON_KEY` (legacy anon) for broad compatibility.
 - 2026-07-09: Middleware imports `./lib/supabase/middleware` (relative) — Vercel Edge rejects `@/` alias.
+- 2026-07-09: Google OAuth via `signInWithOAuth` → `/auth/callback` (same as magic link).
+- 2026-07-09: `RESEND_API_KEY` does not send Auth emails; Supabase Auth SMTP must be configured for branded auth mail.
 
 ## Schema state
 
@@ -23,26 +26,27 @@ No business tables yet. Last migration: none.
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 - `SUPABASE_SERVICE_ROLE_KEY`
 - `NEXT_PUBLIC_SITE_URL` (prod: `https://s1mplecrm.vercel.app`)
-- `RESEND_API_KEY` (optional empty until Phase 5)
+- `RESEND_API_KEY` (app email Phase 5; optional Auth SMTP now)
 - `STRIPE_WEBHOOK_SECRET` (`whsec_placeholder`)
 
 ## Open TODOs
 
-- Confirm Supabase Auth Site URL + redirect allowlist includes `http://localhost:3000/**` and `https://s1mplecrm.vercel.app/**` (callback `/auth/callback`).
-- Optional: dedicated Supabase project when free-tier slot frees (Vercel currently uses project `vyxbggvprphchnecfftq`).
+- User: approve Stitch variation A–E from `DESIGN_PROMPTS.md`.
+- Optional: Supabase Auth Custom SMTP → Resend for magic-link/confirm emails.
+- Confirm Google Cloud redirect URI + Supabase provider credentials for prod + local.
+- Optional: dedicated Supabase project when free-tier slot frees (Vercel uses `vyxbggvprphchnecfftq`).
 
 ## Known issues
 
 - Free Supabase project create blocked under Cadence org (2-project limit) for a brand-new S1mpleCRM project.
 - Vercel Framework Preset must stay **Next.js** (was `Other`; caused Edge `__dirname` 500s).
 
-## Files touched (Phase 0)
+## Files touched (latest)
 
-- `app/(auth)/*`, `app/(dashboard)/*`, `app/auth/callback/route.ts`, `middleware.ts`
-- `lib/supabase/{client,server,admin,middleware}.ts`, `actions/auth.ts`
-- `components/auth/*`, `components/dashboard/*`, `components/ui/*`
-- `vercel.json`, `README.md`, `CRM_HANDOVER.md`, `CHANGELOG.md`, `CLAUDE.md`, `.cursorrules`, `CRM_BUILD_PLAN.md`, `.env.example`
+- `actions/auth.ts` — `signInWithGoogle`
+- `components/auth/google-sign-in-button.tsx`, sign-in/sign-up forms
+- `DESIGN_PROMPTS.md`, `README.md`, `CRM_HANDOVER.md`, `CHANGELOG.md`
 
 ## Next step
 
-User tests sign up / sign in / magic link locally and on production. Then Phase 1 — Tenancy core.
+User tests Google sign-in. Approve a design variation. Then Phase 1 — Tenancy core.

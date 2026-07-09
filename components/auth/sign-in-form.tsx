@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import Link from "next/link";
 import { signIn, signInWithMagicLink, type AuthActionResult } from "@/actions/auth";
+import { GoogleSignInButton } from "@/components/auth/google-sign-in-button";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -36,6 +37,17 @@ export function SignInForm() {
         <CardDescription>Welcome back to S1mpleCRM</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
+        <GoogleSignInButton />
+
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t border-border" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-card px-2 text-muted-foreground">Or email</span>
+          </div>
+        </div>
+
         <form action={passwordAction} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
