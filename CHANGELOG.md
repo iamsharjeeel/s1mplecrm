@@ -6,3 +6,4 @@
 - Fix Vercel Framework Preset to Next.js (Edge middleware `__dirname` 500s when set to Other).
 - Add Google OAuth on sign-in/sign-up; document Resend vs Supabase Auth SMTP; add Stitch design prompts (`DESIGN_PROMPTS.md`).
 - Lock design system: Stitch UI + forest green `#1F4D3A`; `design-spec.md`; top-nav shell; auth match Stitch.
+- Phases 1–6: tenancy, contacts, pipeline kanban, tasks, activity, invites, Resend email, Stripe/Resend webhooks, upgrade page; migration SQL + MANUAL_STEPS.md.

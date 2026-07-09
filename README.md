@@ -55,4 +55,13 @@ Multi-tenant CRM SaaS. Next.js 15 App Router, TypeScript, Tailwind v4, Supabase,
 
 ## Current phase
 
-Phase 0 — Foundation (auth + empty dashboard shell). Tenancy starts in Phase 1 after design approval.
+Phases 0–6 shipped in app code. **You must run the SQL migration** — see [MANUAL_STEPS.md](MANUAL_STEPS.md).
+
+## App routes
+
+- `/onboarding` — create org
+- `/contacts`, `/contacts/[id]` — CRM contacts + email compose
+- `/pipeline` — kanban deals
+- `/tasks`, `/activity`, `/team`, `/settings`, `/upgrade`
+- `/invite/[token]` — accept invite
+- `/api/webhooks/stripe`, `/api/webhooks/resend`
