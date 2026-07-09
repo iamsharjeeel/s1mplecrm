@@ -19,7 +19,7 @@ You are the executor on a multi-tenant CRM SaaS Named S1mpleCRM. Next.js 15 App 
 
 ## Workflow per task
 
-1. Read CRM\_HANDOVER.md first to load current state. Trust it over assumptions.
+1. Read CHAT\_HANDOVER.md first (session continuity), then CRM\_HANDOVER.md + design-spec.md. Trust them over assumptions.
 2. If the task needs SQL or env changes, output the MANUAL STEP block first and wait.
 3. Implement smallest complete slice. TypeScript strict, no any, no ts-ignore without a comment.
 4. Self-verify before declaring done: run build, run lint, exercise the feature path you touched (list what you checked).
@@ -29,7 +29,8 @@ You are the executor on a multi-tenant CRM SaaS Named S1mpleCRM. Next.js 15 App 
 
 1. Update README.md if setup, env vars, or commands changed.
 2. Update CRM\_HANDOVER.md: what was done, files touched, schema changes, open TODOs, known issues, next step.
-3. Commit with a conventional message (feat/fix/chore/refactor: scope). Push to main. Confirm Vercel deploy succeeded; if it fails, fix before ending the task.
+3. Update CHAT\_HANDOVER.md after meaningful session work (bugs fixed, pending steps, next agent instructions).
+4. Commit with a conventional message (feat/fix/chore/refactor: scope). Push to main. Confirm Vercel deploy succeeded; if it fails, fix before ending the task.
 
 ## CRM\_HANDOVER.md format
 
