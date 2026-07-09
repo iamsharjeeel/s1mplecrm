@@ -29,20 +29,19 @@ No business tables yet. Last migration: none.
 ## Open TODOs
 
 - Confirm Supabase Auth Site URL + redirect allowlist includes `http://localhost:3000/**` and `https://s1mplecrm.vercel.app/**` (callback `/auth/callback`).
-- `gh auth login` then `git push -u origin main` so GitHub `iamsharjeeel/s1mplecrm` matches local commits (CLI deploy already succeeded).
-- Optional: dedicated Supabase project when free-tier slot frees (currently reusing keys already on Vercel).
+- Optional: dedicated Supabase project when free-tier slot frees (Vercel currently uses project `vyxbggvprphchnecfftq`).
 
 ## Known issues
 
-- Free Supabase project create blocked (2-project limit on Cadence org).
-- GitHub CLI not authenticated on this machine; production shipped via `vercel deploy --prod`.
+- Free Supabase project create blocked under Cadence org (2-project limit) for a brand-new S1mpleCRM project.
+- Vercel Framework Preset must stay **Next.js** (was `Other`; caused Edge `__dirname` 500s).
 
 ## Files touched (Phase 0)
 
 - `app/(auth)/*`, `app/(dashboard)/*`, `app/auth/callback/route.ts`, `middleware.ts`
 - `lib/supabase/{client,server,admin,middleware}.ts`, `actions/auth.ts`
 - `components/auth/*`, `components/dashboard/*`, `components/ui/*`
-- `README.md`, `CRM_HANDOVER.md`, `CHANGELOG.md`, `CLAUDE.md`, `.cursorrules`, `CRM_BUILD_PLAN.md`, `.env.example`
+- `vercel.json`, `README.md`, `CRM_HANDOVER.md`, `CHANGELOG.md`, `CLAUDE.md`, `.cursorrules`, `CRM_BUILD_PLAN.md`, `.env.example`
 
 ## Next step
 
