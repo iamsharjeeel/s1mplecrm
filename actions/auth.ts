@@ -1,5 +1,6 @@
 "use server";
 
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
@@ -17,6 +18,14 @@ export type AuthActionResult = {
   data: { sent: true } | null;
   error: string | null;
 };
+
+async function getRequestOrigin(): Promise<string> {
+  const h = await headers();
+  const host = h.get("x-forwarded-host") ?? h.get("host");
+  const proto = h.get("x-forwarded-proto") ?? "http";
+  if (host) return `${proto.split(",")[0].trim()}://${host}`;
+  return process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+}
 
 export async function signUp(
   _prev: AuthActionResult,
@@ -85,7 +94,7 @@ export async function signInWithMagicLink(
   }
 
   const supabase = await createClient();
-  const origin = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const origin = await getRequestOrigin();
 
   const { error } = await supabase.auth.signInWithOtp({
     email: parsed.data.email,
@@ -104,7 +113,7 @@ export async function signInWithMagicLink(
 
 export async function signInWithGoogle(): Promise<AuthActionResult> {
   const supabase = await createClient();
-  const origin = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const origin = await getRequestOrigin();
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",

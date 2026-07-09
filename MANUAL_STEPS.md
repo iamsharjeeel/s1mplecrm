@@ -15,17 +15,13 @@ Supabase MCP on this machine only sees the Cadence project, not `vyxbggvprphchne
 
 **To let the agent apply migrations later:** in Cursor, re-auth the Supabase MCP / add project `vyxbggvprphchnecfftq` to the linked org, or run `npx supabase login` then `npx supabase link --project-ref vyxbggvprphchnecfftq`.
 
-## 2. Auth redirect URLs (REQUIRED for Google / magic link)
+## Auth redirect behavior
 
-Supabase → Authentication → URL Configuration:
+OAuth / magic-link callbacks use the **current request host** (not a hardcoded env URL):
+- Sign in on `localhost:3000` → callback `http://localhost:3000/auth/callback`
+- Sign in on `s1mplecrm.vercel.app` → callback `https://s1mplecrm.vercel.app/auth/callback`
 
-- Site URL: `https://s1mplecrm.vercel.app`
-- Redirect URLs:
-  - `http://localhost:3000/auth/callback`
-  - `https://s1mplecrm.vercel.app/auth/callback`
-
-Google Cloud OAuth client authorized redirect:
-`https://vyxbggvprphchnecfftq.supabase.co/auth/v1/callback`
+Keep **both** URLs in Supabase Auth redirect allowlist. Do not remove localhost unless you only ever use production.
 
 ## 3. Resend for invites + contact email (REQUIRED for Phase 4/5 send)
 
