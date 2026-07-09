@@ -1,0 +1,25 @@
+---
+description: Locked S1mpleCRM visual design system (Stitch + forest green)
+alwaysApply: true
+---
+
+# Design system (mandatory)
+
+Read and obey [design-spec.md](design-spec.md) before any UI change.
+
+## Non-negotiables
+
+- Accent: deep forest green `#1F4D3A` (`primary-container`). Brand/ink: `#023625` (`primary`).
+- Fonts: Libre Caslon Text for headlines/brand; Inter for body/labels. No Geist for UI chrome.
+- Light theme + linen background only. No dark-mode-first, purple, glow, or rounded-full status pills.
+- App shell is **top nav** (max 1200px), not a left sidebar.
+- Cards only for interactive containers. Empty states: one headline, one sentence, one CTA.
+- Stage markers are squares (`rounded-none`), not pills.
+
+## Token source of truth
+
+CSS variables in `app/globals.css`. Prefer Tailwind theme colors mapped there (`bg-primary-container`, `text-on-surface`, etc.). Do not invent parallel hex values.
+
+## If unsure
+
+Match the Stitch HTML patterns documented in `design-spec.md`. Do not "improve" the palette.

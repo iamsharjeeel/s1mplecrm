@@ -35,6 +35,10 @@ You are the executor on a multi-tenant CRM SaaS Named S1mpleCRM. Next.js 15 App 
 
 Keep it under 200 lines. Sections: Current phase and status. Architecture decisions (append-only, dated). Schema state (table list + last migration file). Env vars required. Open TODOs. Known issues. Next step. Prune completed TODOs; never prune decisions.
 
+## Design system
+
+* Visual source of truth: `design-spec.md` and `.cursor/rules/design-system.mdc`. Accent is forest green `#1F4D3A`. Do not invent palettes or switch to dark mode / purple / left sidebar.
+
 ## Code conventions
 
 * Structure: app/(auth), app/(dashboard), lib/ (supabase clients, plans, permissions, activity), components/ui (shadcn), components/feature-name.

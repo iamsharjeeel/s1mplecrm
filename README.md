@@ -47,9 +47,10 @@ Multi-tenant CRM SaaS. Next.js 15 App Router, TypeScript, Tailwind v4, Supabase,
 
 ## Docs
 
+- [design-spec.md](design-spec.md) — **locked visual system** (agents must follow)
 - [CRM_BUILD_PLAN.md](CRM_BUILD_PLAN.md) — phases and scope
 - [CRM_HANDOVER.md](CRM_HANDOVER.md) — current state for agents
-- [DESIGN_PROMPTS.md](DESIGN_PROMPTS.md) — Stitch.withgoogle design variations
+- [DESIGN_PROMPTS.md](DESIGN_PROMPTS.md) — Stitch variation archive
 - [CLAUDE.md](CLAUDE.md) / [.cursorrules](.cursorrules) — project rules
 
 ## Current phase

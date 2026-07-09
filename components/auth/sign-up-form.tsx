@@ -2,19 +2,10 @@
 
 import { useActionState } from "react";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { signUp, type AuthActionResult } from "@/actions/auth";
+import { FloatingInput } from "@/components/auth/floating-input";
 import { GoogleSignInButton } from "@/components/auth/google-sign-in-button";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 
 const initial: AuthActionResult = { data: null, error: null };
 
@@ -22,60 +13,66 @@ export function SignUpForm() {
   const [state, formAction, pending] = useActionState(signUp, initial);
 
   return (
-    <Card className="w-full max-w-md border-border/60 shadow-none">
-      <CardHeader>
-        <CardTitle className="text-2xl tracking-tight">Create account</CardTitle>
-        <CardDescription>Get started with S1mpleCRM</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-6">
+    <div className="w-full rounded-xl border border-secondary-container bg-surface-container-lowest p-8 shadow-confidence sm:p-12">
+      <div className="mb-8 text-center">
+        <h2 className="font-headline mb-2 text-2xl leading-snug text-on-surface">
+          Create account
+        </h2>
+        <p className="text-base text-on-surface-variant">
+          Get started with your workspace
+        </p>
+      </div>
+
+      <div className="mb-6">
         <GoogleSignInButton />
+      </div>
 
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t border-border" />
-          </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-card px-2 text-muted-foreground">Or email</span>
-          </div>
-        </div>
+      <div className="relative flex items-center py-2">
+        <div className="flex-grow border-t border-secondary-container" />
+        <span className="mx-4 flex-shrink-0 text-xs font-medium tracking-wider text-on-surface-variant uppercase">
+          Or
+        </span>
+        <div className="flex-grow border-t border-secondary-container" />
+      </div>
 
-        <form action={formAction} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              autoComplete="email"
-              required
-              placeholder="you@company.com"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              name="password"
-              type="password"
-              autoComplete="new-password"
-              required
-              minLength={8}
-            />
-          </div>
-          {state.error ? (
-            <p className="text-sm text-destructive">{state.error}</p>
-          ) : null}
-          <Button type="submit" className="w-full" disabled={pending}>
-            {pending ? "Creating…" : "Sign up"}
-          </Button>
-        </form>
-      </CardContent>
-      <CardFooter className="justify-center text-sm text-muted-foreground">
+      <form action={formAction} className="mt-4 flex flex-col gap-4">
+        <FloatingInput
+          label="Email address"
+          name="email"
+          type="email"
+          autoComplete="email"
+          required
+        />
+        <FloatingInput
+          label="Password"
+          name="password"
+          type="password"
+          autoComplete="new-password"
+          required
+          minLength={8}
+        />
+        {state.error ? (
+          <p className="text-sm text-error">{state.error}</p>
+        ) : null}
+        <button
+          type="submit"
+          disabled={pending}
+          className="mt-2 flex w-full items-center justify-center gap-2 rounded bg-primary-container px-4 py-3 text-xs font-medium tracking-wide text-on-primary uppercase transition-colors hover:bg-primary disabled:opacity-50"
+        >
+          {pending ? "Creating…" : "Sign Up"}
+          <ArrowRight className="size-[18px]" />
+        </button>
+      </form>
+
+      <p className="mt-8 text-center text-base text-on-surface-variant">
         Already have an account?{" "}
-        <Link href="/sign-in" className="ml-1 text-foreground underline-offset-4 hover:underline">
+        <Link
+          href="/sign-in"
+          className="text-xs font-medium tracking-wide text-primary-container uppercase transition-colors hover:text-primary"
+        >
           Sign in
         </Link>
-      </CardFooter>
-    </Card>
+      </p>
+    </div>
   );
 }

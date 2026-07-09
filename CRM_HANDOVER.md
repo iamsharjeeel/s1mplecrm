@@ -2,8 +2,8 @@
 
 ## Current phase and status
 
-Phase 0 — Foundation: **done** (+ Google OAuth UI). Live: https://s1mplecrm.vercel.app  
-Awaiting design variation approval (see `DESIGN_PROMPTS.md`) before Phase 1 UI polish. Phase 1 tenancy can start after user confirms Google + auth SMTP preference.
+Phase 0 — Foundation: **done** + design system locked. Live: https://s1mplecrm.vercel.app  
+Design: Stitch shell + Ledger Light forest green `#1F4D3A` — see `design-spec.md`.
 
 ## Architecture decisions
 
@@ -13,8 +13,9 @@ Awaiting design variation approval (see `DESIGN_PROMPTS.md`) before Phase 1 UI p
 - 2026-07-09: Auth mutations in `actions/auth.ts` with zod; return `{ data, error }`.
 - 2026-07-09: Env uses `NEXT_PUBLIC_SUPABASE_ANON_KEY` (legacy anon) for broad compatibility.
 - 2026-07-09: Middleware imports `./lib/supabase/middleware` (relative) — Vercel Edge rejects `@/` alias.
-- 2026-07-09: Google OAuth via `signInWithOAuth` → `/auth/callback` (same as magic link).
+- 2026-07-09: Google OAuth via `signInWithOAuth` → `/auth/callback`.
 - 2026-07-09: `RESEND_API_KEY` does not send Auth emails; Supabase Auth SMTP must be configured for branded auth mail.
+- 2026-07-09: **Design locked** — Stitch HTML + forest green accent; top nav shell; Libre Caslon + Inter; tokens in `app/globals.css`; agent rule `.cursor/rules/design-system.mdc`.
 
 ## Schema state
 
@@ -31,22 +32,22 @@ No business tables yet. Last migration: none.
 
 ## Open TODOs
 
-- User: approve Stitch variation A–E from `DESIGN_PROMPTS.md`.
 - Optional: Supabase Auth Custom SMTP → Resend for magic-link/confirm emails.
-- Confirm Google Cloud redirect URI + Supabase provider credentials for prod + local.
-- Optional: dedicated Supabase project when free-tier slot frees (Vercel uses `vyxbggvprphchnecfftq`).
+- Confirm Google Cloud redirect URI for prod + local.
+- Phase 1 — Tenancy core (orgs, RLS, getActiveOrg).
 
 ## Known issues
 
-- Free Supabase project create blocked under Cadence org (2-project limit) for a brand-new S1mpleCRM project.
-- Vercel Framework Preset must stay **Next.js** (was `Other`; caused Edge `__dirname` 500s).
+- Free Supabase project create blocked under Cadence org (2-project limit).
+- Vercel Framework Preset must stay **Next.js**.
 
-## Files touched (latest)
+## Files touched (design lock)
 
-- `actions/auth.ts` — `signInWithGoogle`
-- `components/auth/google-sign-in-button.tsx`, sign-in/sign-up forms
-- `DESIGN_PROMPTS.md`, `README.md`, `CRM_HANDOVER.md`, `CHANGELOG.md`
+- `design-spec.md`, `.cursor/rules/design-system.mdc`
+- `app/globals.css`, `app/layout.tsx`
+- `components/auth/*`, `components/dashboard/top-nav.tsx`
+- `app/(auth)/*`, `app/(dashboard)/*`
 
 ## Next step
 
-User tests Google sign-in. Approve a design variation. Then Phase 1 — Tenancy core.
+Phase 1 — Tenancy core (after user confirms UI looks right on prod).

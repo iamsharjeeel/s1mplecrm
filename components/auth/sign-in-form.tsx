@@ -2,19 +2,10 @@
 
 import { useActionState } from "react";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { signIn, signInWithMagicLink, type AuthActionResult } from "@/actions/auth";
+import { FloatingInput } from "@/components/auth/floating-input";
 import { GoogleSignInButton } from "@/components/auth/google-sign-in-button";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 
 const initial: AuthActionResult = { data: null, error: null };
 
@@ -31,99 +22,91 @@ export function SignInForm() {
   const magicSent = magicState.data?.sent === true;
 
   return (
-    <Card className="w-full max-w-md border-border/60 shadow-none">
-      <CardHeader>
-        <CardTitle className="text-2xl tracking-tight">Sign in</CardTitle>
-        <CardDescription>Welcome back to S1mpleCRM</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-6">
+    <div className="w-full rounded-xl border border-secondary-container bg-surface-container-lowest p-8 shadow-confidence sm:p-12">
+      <div className="mb-8 text-center">
+        <h2 className="font-headline mb-2 text-2xl leading-snug text-on-surface">
+          Welcome back
+        </h2>
+        <p className="text-base text-on-surface-variant">
+          Sign in to continue to your workspace
+        </p>
+      </div>
+
+      <form action={passwordAction} className="flex flex-col gap-4">
+        <FloatingInput
+          label="Email address"
+          name="email"
+          type="email"
+          autoComplete="email"
+          required
+        />
+        <FloatingInput
+          label="Password"
+          name="password"
+          type="password"
+          autoComplete="current-password"
+          required
+          minLength={8}
+        />
+        {passwordState.error ? (
+          <p className="text-sm text-error">{passwordState.error}</p>
+        ) : null}
+        <button
+          type="submit"
+          disabled={passwordPending}
+          className="mt-2 flex w-full items-center justify-center gap-2 rounded bg-primary-container px-4 py-3 text-xs font-medium tracking-wide text-on-primary uppercase transition-colors hover:bg-primary disabled:opacity-50"
+        >
+          {passwordPending ? "Signing in…" : "Sign In"}
+          <ArrowRight className="size-[18px]" />
+        </button>
+      </form>
+
+      <div className="relative flex items-center py-6">
+        <div className="flex-grow border-t border-secondary-container" />
+        <span className="mx-4 flex-shrink-0 text-xs font-medium tracking-wider text-on-surface-variant uppercase">
+          Or
+        </span>
+        <div className="flex-grow border-t border-secondary-container" />
+      </div>
+
+      <div className="flex flex-col gap-2">
         <GoogleSignInButton />
+      </div>
 
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t border-border" />
-          </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-card px-2 text-muted-foreground">Or email</span>
-          </div>
-        </div>
+      <form action={magicAction} className="mt-4 flex flex-col gap-3">
+        <FloatingInput
+          label="Email for magic link"
+          name="email"
+          type="email"
+          autoComplete="email"
+          required
+        />
+        {magicState.error ? (
+          <p className="text-sm text-error">{magicState.error}</p>
+        ) : null}
+        {magicSent ? (
+          <p className="text-sm text-on-surface-variant">
+            Check your email for a sign-in link.
+          </p>
+        ) : null}
+        <button
+          type="submit"
+          disabled={magicPending}
+          className="w-full rounded border border-secondary-container bg-surface-container-lowest px-4 py-3 text-sm text-on-surface transition-colors hover:bg-surface-container-low disabled:opacity-50"
+        >
+          {magicPending ? "Sending…" : "Send magic link"}
+        </button>
+      </form>
 
-        <form action={passwordAction} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              autoComplete="email"
-              required
-              placeholder="you@company.com"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              name="password"
-              type="password"
-              autoComplete="current-password"
-              required
-              minLength={8}
-            />
-          </div>
-          {passwordState.error ? (
-            <p className="text-sm text-destructive">{passwordState.error}</p>
-          ) : null}
-          <Button type="submit" className="w-full" disabled={passwordPending}>
-            {passwordPending ? "Signing in…" : "Sign in"}
-          </Button>
-        </form>
-
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t border-border" />
-          </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-card px-2 text-muted-foreground">Or magic link</span>
-          </div>
-        </div>
-
-        <form action={magicAction} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="magic-email">Email</Label>
-            <Input
-              id="magic-email"
-              name="email"
-              type="email"
-              autoComplete="email"
-              required
-              placeholder="you@company.com"
-            />
-          </div>
-          {magicState.error ? (
-            <p className="text-sm text-destructive">{magicState.error}</p>
-          ) : null}
-          {magicSent ? (
-            <p className="text-sm text-muted-foreground">
-              Check your email for a sign-in link.
-            </p>
-          ) : null}
-          <Button
-            type="submit"
-            variant="outline"
-            className="w-full"
-            disabled={magicPending}
-          >
-            {magicPending ? "Sending…" : "Send magic link"}
-          </Button>
-        </form>
-      </CardContent>
-      <CardFooter className="justify-center text-sm text-muted-foreground">
-        No account?{" "}
-        <Link href="/sign-up" className="ml-1 text-foreground underline-offset-4 hover:underline">
+      <p className="mt-8 text-center text-base text-on-surface-variant">
+        Don&apos;t have an account?{" "}
+        <Link
+          href="/sign-up"
+          className="text-xs font-medium tracking-wide text-primary-container uppercase transition-colors hover:text-primary"
+        >
           Sign up
         </Link>
-      </CardFooter>
-    </Card>
+      </p>
+    </div>
   );
 }
